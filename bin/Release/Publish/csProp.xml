@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<cmfp:Description xmlns:cmfp="http://www.fujixerox.co.jp/2008/01/cmfp/prop">
+	<cmfp:Id>AGDS_CUSTOM_SCAN_v1</cmfp:Id>
+	<cmfp:Version>2.1.2</cmfp:Version>
+	<cmfp:Copyright>Copyright(C) RGE 2020 Astragraphia. All rights reserved.</cmfp:Copyright>
+	<cmfp:Reference>
+		<cmfp:LibInfo version="3.2.6">ALL</cmfp:LibInfo>
+	</cmfp:Reference>
+</cmfp:Description>

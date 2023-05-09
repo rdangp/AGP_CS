@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8" ?> 
+<Configration xmlns="StudentPrint2015">
+
+  <!--
+      Please specify the root folder for reference to get the document/folder list.
+      The PDF document and sub folder under the folder specified here will be referred.
+      Please set the proper access right to the folder specified here. 
+  -->
+  <RootDirectoryPath>C:\Temp</RootDirectoryPath>
+
+  <!--
+      Please specify the IP address of multifunction device used while debugging.
+      If the client is not an Embedded Web Browser of ApeosPort, the job will be outputted
+      to this IP address. Please change the IP address of your multifunction device to
+      192.168.0.2.
+  -->
+  <DeviceIPForDebug>10.21.204.58</DeviceIPForDebug>
+
+
+  <!--
+			Waiting time after print process starts
+      Specify the maximum waiting time for end of print process in seconds.
+	-->
+	<PrintWaitTime>30</PrintWaitTime>
+	
+	
+	<!--
+			Document Registration Web Service URL
+	-->
+	<IndexDocServiceURL>http://localhost/ScanUploadService/ScanUploadService.asmx</IndexDocServiceURL>
+	
+	<!--	
+			Folder for Apeos JF SCLIPT template of document registration
+	-->
+	<JFTemplatePath>JFSCLIPT</JFTemplatePath>
+
+  <!--	
+			Folder for saving the text file as error log and the created Apeos JF SCLIPT
+	-->
+  <LogFolderForDebug>Log</LogFolderForDebug>
+  
+	<!--
+			Specify whether to save the created Apeos JF SCLIPT file
+	-->
+	<SaveJFScliptFile>true</SaveJFScliptFile>
+
+  <!--
+			Specify whether DocuWorks document direct print is supported or not
+	-->
+  <XdwSupport>false</XdwSupport>
+</Configration>

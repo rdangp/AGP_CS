@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<ServiceDescription xmlns="http://www.fujixerox.co.jp/2007/08/ssm/cmfp/serviceDescription">
+<IconLabel>AGDS SCAN</IconLabel>
+<Description>Scan Document AGDS</Description>
+</ServiceDescription>

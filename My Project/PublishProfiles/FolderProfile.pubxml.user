@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+This file is used by the publish/package process of your Web project. You can customize the behavior of this process
+by editing this MSBuild file. In order to learn more about this please visit https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <TimeStampOfAssociatedLegacyPublishXmlFile />
+    <_PublishTargetUrl>D:\PROGRAM VB\WEB APP\CUSTOM SCAN PROJECT\KUMPULAN CUSTOM SCAN\AG_SCAN\AG_SCAN\bin\Release\Publish</_PublishTargetUrl>
+    <History>True|2022-06-21T09:57:38.7436683Z;False|2022-06-21T16:56:58.6286863+07:00;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/AG_SCAN.dll">
+      <publishTime>06/21/2022 17:46:54</publishTime>
+    </File>
+    <File Include="bin/AG_SCAN.pdb">
+      <publishTime>06/21/2022 17:46:54</publishTime>
+    </File>
+    <File Include="bin/AG_SCAN.xml">
+      <publishTime>06/21/2022 17:46:54</publishTime>
+    </File>
+    <File Include="bin/DevCapDB.dll">
+      <publishTime>11/06/2013 10:53:52</publishTime>
+    </File>
+    <File Include="bin/DevModel.dll">
+      <publishTime>11/06/2013 10:53:52</publishTime>
+    </File>
+    <File Include="Config.xml">
+      <publishTime>07/16/2020 14:02:45</publishTime>
+    </File>
+    <File Include="csProp.xml">
+      <publishTime>07/23/2020 13:14:07</publishTime>
+    </File>
+    <File Include="css/jquery-ui.css">
+      <publishTime>07/16/2020 14:02:09</publishTime>
+    </File>
+    <File Include="css/jquery-ui.js">
+      <publishTime>07/16/2020 14:02:10</publishTime>
+    </File>
+    <File Include="dppm.aspx">
+      <publishTime>07/24/2020 16:29:25</publishTime>
+    </File>
+    <File Include="ErrorPage.aspx">
+      <publishTime>07/17/2020 16:42:31</publishTime>
+    </File>
+    <File Include="images/BACK.png">
+      <publishTime>07/16/2020 14:02:10</publishTime>
+    </File>
+    <File Include="images/BG.jpg">
+      <publishTime>07/16/2020 14:40:00</publishTime>
+    </File>
+    <File Include="images/BG.psd">
+      <publishTime>07/16/2020 14:02:10</publishTime>
+    </File>
+    <File Include="images/btn_search.png">
+      <publishTime>07/16/2020 14:02:10</publishTime>
+    </File>
+    <File Include="images/header.jpg">
+      <publishTime>07/16/2020 14:36:02</publishTime>
+    </File>
+    <File Include="images/icon.psd">
+      <publishTime>08/06/2020 07:46:04</publishTime>
+    </File>
+    <File Include="images/icon_dppm.png">
+      <publishTime>07/16/2020 14:53:56</publishTime>
+    </File>
+    <File Include="images/icon_kontrak.png">
+      <publishTime>07/16/2020 14:52:56</publishTime>
+    </File>
+    <File Include="images/icon_sekretaris.png">
+      <publishTime>08/06/2020 07:46:25</publishTime>
+    </File>
+    <File Include="images/icon_warning.png">
+      <publishTime>07/16/2020 14:02:10</publishTime>
+    </File>
+    <File Include="images/judul_dppm.png">
+      <publishTime>07/16/2020 15:29:42</publishTime>
+    </File>
+    <File Include="images/judul_kontrak.png">
+      <publishTime>07/16/2020 15:27:12</publishTime>
+    </File>
+    <File Include="images/NEXT.png">
+      <publishTime>07/16/2020 14:02:10</publishTime>
+    </File>
+    <File Include="images/OK.png">
+      <publishTime>07/16/2020 14:02:10</publishTime>
+    </File>
+    <File Include="images/scan_next.png">
+      <publishTime>07/16/2020 14:02:10</publishTime>
+    </File>
+    <File Include="index.aspx">
+      <publishTime>08/06/2020 07:47:58</publishTime>
+    </File>
+    <File Include="info/csinfo.xml">
+      <publishTime>07/17/2020 15:55:00</publishTime>
+    </File>
+    <File Include="info/largeicon.png">
+      <publishTime>07/16/2020 14:02:10</publishTime>
+    </File>
+    <File Include="info/smallicon.png">
+      <publishTime>07/17/2020 15:58:14</publishTime>
+    </File>
+    <File Include="info/smallicon1.png">
+      <publishTime>07/16/2020 14:02:10</publishTime>
+    </File>
+    <File Include="info/smallicon2.png">
+      <publishTime>07/16/2020 14:02:10</publishTime>
+    </File>
+    <File Include="info/Thumbs.db">
+      <publishTime>07/16/2020 14:02:10</publishTime>
+    </File>
+    <File Include="JFSCLIPT/Sample_AuthInfofromMFP.xml">
+      <publishTime>07/16/2020 14:02:10</publishTime>
+    </File>
+    <File Include="JFSCLIPT/Sample_AuthInfofromWebApp.xml">
+      <publishTime>07/16/2020 14:02:10</publishTime>
+    </File>
+    <File Include="JFSCLIPT/Sample_UnAuth.xml">
+      <publishTime>07/24/2020 08:31:58</publishTime>
+    </File>
+    <File Include="JFSCLIPT/Sample_UnAuth_OCR.xml">
+      <publishTime>07/23/2020 12:23:15</publishTime>
+    </File>
+    <File Include="js/jquery-1.12.4.js">
+      <publishTime>07/16/2020 14:02:10</publishTime>
+    </File>
+    <File Include="js/jquery-ui.js">
+      <publishTime>07/16/2020 14:02:10</publishTime>
+    </File>
+    <File Include="kontrak.aspx">
+      <publishTime>08/18/2020 15:28:25</publishTime>
+    </File>
+    <File Include="Sekretaris.aspx">
+      <publishTime>08/18/2020 15:30:53</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>06/21/2022 17:31:01</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

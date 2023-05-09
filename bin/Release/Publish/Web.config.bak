@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+  For more information on how to configure your ASP.NET application, please visit
+  https://go.microsoft.com/fwlink/?LinkId=169433
+  -->
+<configuration>
+  <configSections>
+    <sectionGroup name="applicationSettings" type="System.Configuration.ApplicationSettingsGroup, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+      <section name="AG_SCAN.My.MySettings" type="System.Configuration.ClientSettingsSection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
+    </sectionGroup>
+  </configSections>
+  <system.web>
+    <compilation strict="false" explicit="true" targetFramework="4.0" />
+  </system.web>
+  <applicationSettings>
+    <AG_SCAN.My.MySettings>
+      <setting name="DirScanKontrak" serializeAs="String">
+        <value>D:\Folder Scan\AG_SCAN\DirectoryScan\Kontrak</value>
+      </setting>
+      <setting name="JFTemplatePath" serializeAs="String">
+        <value>JFSCLIPT</value>
+      </setting>
+      <setting name="LogFolderForDebug" serializeAs="String">
+        <value>Log</value>
+      </setting>
+      <setting name="SaveJFScliptFile" serializeAs="String">
+        <value>true</value>
+      </setting>
+      <setting name="DirScanDPPM" serializeAs="String">
+        <value>D:\Folder Scan\AG_SCAN\DirectoryScan\DPPM</value>
+      </setting>
+      <setting name="DirScanSekretaris" serializeAs="String">
+        <value>D:\Folder Scan\AG_SCAN\DirectoryScan\Sekretaris</value>
+      </setting>
+      <setting name="IndexDocServiceURL" serializeAs="String">
+        <value>http://localhost/ScanServiceGdrive/ScanServiceGdrive.asmx</value>
+      </setting>
+    </AG_SCAN.My.MySettings>
+  </applicationSettings>
+  <system.webServer>
+    <defaultDocument>
+      <files>
+        <add value="index.aspx" />
+      </files>
+    </defaultDocument>
+  </system.webServer>
+</configuration>
+<!--ProjectGuid: 485E3212-F66D-45AA-BEFF-DAE5C0CCDDFB-->

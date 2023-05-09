@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!--
+https://go.microsoft.com/fwlink/?LinkID=208121. 
+-->
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_PublishTargetUrl>D:\AG_Material\Custom Scan\Installer\Direktori</_PublishTargetUrl>
+    <History>True|2023-05-08T02:09:42.5915508Z;</History>
+  </PropertyGroup>
+  <ItemGroup>
+    <File Include="bin/AG_SCAN.dll">
+      <publishTime>05/08/2023 09:09:41</publishTime>
+    </File>
+    <File Include="bin/AG_SCAN.pdb">
+      <publishTime>05/08/2023 09:09:41</publishTime>
+    </File>
+    <File Include="bin/AG_SCAN.xml">
+      <publishTime>05/08/2023 09:09:41</publishTime>
+    </File>
+    <File Include="bin/DevCapDB.dll">
+      <publishTime>03/06/2023 11:17:57</publishTime>
+    </File>
+    <File Include="bin/DevModel.dll">
+      <publishTime>03/06/2023 11:17:57</publishTime>
+    </File>
+    <File Include="Config.xml">
+      <publishTime>03/06/2023 11:17:56</publishTime>
+    </File>
+    <File Include="csProp.xml">
+      <publishTime>03/06/2023 11:17:56</publishTime>
+    </File>
+    <File Include="css/jquery-ui.css">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="css/jquery-ui.js">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="dppm.aspx">
+      <publishTime>03/06/2023 11:17:56</publishTime>
+    </File>
+    <File Include="ErrorPage.aspx">
+      <publishTime>03/06/2023 11:17:56</publishTime>
+    </File>
+    <File Include="images/BACK.png">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="images/BG.jpg">
+      <publishTime>05/08/2023 08:59:27</publishTime>
+    </File>
+    <File Include="images/BG.psd">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="images/btn_search.png">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="images/header.jpg">
+      <publishTime>05/08/2023 08:59:27</publishTime>
+    </File>
+    <File Include="images/icon.psd">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="images/icon_dppm.png">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="images/icon_kontrak.png">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="images/icon_sekretaris.png">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="images/icon_warning.png">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="images/judul_dppm.png">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="images/judul_kontrak.png">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="images/NEXT.png">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="images/OK.png">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="images/scan_next.png">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="index.aspx">
+      <publishTime>03/06/2023 11:17:56</publishTime>
+    </File>
+    <File Include="info/csinfo.xml">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="info/largeicon.png">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="info/smallicon.png">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="info/smallicon1.png">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="info/smallicon2.png">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="JFSCLIPT/Sample_AuthInfofromMFP.xml">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="JFSCLIPT/Sample_AuthInfofromWebApp.xml">
+      <publishTime>03/06/2023 11:17:58</publishTime>
+    </File>
+    <File Include="JFSCLIPT/Sample_UnAuth.xml">
+      <publishTime>03/06/2023 11:17:59</publishTime>
+    </File>
+    <File Include="JFSCLIPT/Sample_UnAuth_OCR.xml">
+      <publishTime>03/06/2023 11:17:59</publishTime>
+    </File>
+    <File Include="js/jquery-1.12.4.js">
+      <publishTime>03/06/2023 11:17:59</publishTime>
+    </File>
+    <File Include="js/jquery-ui.js">
+      <publishTime>03/06/2023 11:17:59</publishTime>
+    </File>
+    <File Include="kontrak.aspx">
+      <publishTime>03/06/2023 11:17:57</publishTime>
+    </File>
+    <File Include="Sekretaris.aspx">
+      <publishTime>03/06/2023 11:17:57</publishTime>
+    </File>
+    <File Include="Trial.aspx">
+      <publishTime>03/06/2023 11:17:57</publishTime>
+    </File>
+    <File Include="Web.config">
+      <publishTime>05/08/2023 09:09:42</publishTime>
+    </File>
+  </ItemGroup>
+</Project>

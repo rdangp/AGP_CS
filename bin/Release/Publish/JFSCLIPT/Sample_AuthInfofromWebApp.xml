@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<soapENV:Envelope xmlns:soapENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:jt="http://www.fujixerox.co.jp/2003/12/ssm/jobTemplate">
+  <soapENV:Header>
+    <jt:JobTemplate jt:version="3.0.4" jt:profile="0">
+      <jt:Name>Web-ScanPrint Sample</jt:Name>
+      <jt:Description>An example JF SCLIPT that scans document, and calls an ScanUploadService. Documents are attached to the SOAP request.</jt:Description>
+      <jt:Copyright>Copyright (C) 2007 Fuji Xerox Co., Ltd.</jt:Copyright>
+      <jt:Author>sampleAuthor</jt:Author>
+      <jt:CreatedBy jt:identifier="00000">Apeos iiX Sample SDK Creater</jt:CreatedBy>
+      <jt:CreationDateTime>2007-12-01T00:00:00+00:00</jt:CreationDateTime>
+      <jt:ModificationDateTime>2007-12-01T00:00:00+00:00</jt:ModificationDateTime>
+      <jt:TargetInterpreters>
+        <jt:MachineOID>1.3.6.1.4.1.297.1.11.93.1</jt:MachineOID>
+      </jt:TargetInterpreters>
+      <jt:ExecutionHints>
+        <jt:Resources>
+          <jt:Resource>OperatorInputs/Simple</jt:Resource>
+          <jt:Resource>Acquire/Scanner/Color</jt:Resource>
+          <jt:Resource>Acquire/Scanner/BW</jt:Resource>
+          <jt:Resource>Invoke/WebService/Attachment</jt:Resource>
+        </jt:Resources>
+      </jt:ExecutionHints>
+    </jt:JobTemplate>
+  </soapENV:Header>
+  <soapENV:Body>
+    <jt:ProcessRequest>
+      <jt:Setup>
+        <jt:OperatorInputs>
+          <jt:Group jt:label="Scan Parameter" jt:name="ScanParam">
+            <jt:Input xsi:type="jt:ChoiceType" jt:label="Color Mode" jt:name="ColorMode">
+              <jt:Choice jt:label="Auto">Auto</jt:Choice>
+              <jt:Choice jt:label="Monochrome">BlackAndWhite</jt:Choice>
+              <jt:Choice jt:label="Gray scale">Grayscale</jt:Choice>
+              <jt:Choice jt:label="Full color" jt:defaultValue="true">FullColor</jt:Choice>
+              <jt:Value>Auto</jt:Value>
+            </jt:Input>
+            <jt:Input xsi:type="jt:ChoiceType" jt:label="2-sided" jt:name="Duplex">
+              <jt:Choice jt:label="1-sided Print" jt:defaultValue="true">Simplex</jt:Choice>
+              <jt:Choice jt:label="2-sided Print (Flip on long edge)">Duplex</jt:Choice>
+              <jt:Choice jt:label="2-sided Print (Flip on short edge)">Tumble</jt:Choice>
+              <jt:Value>Simplex</jt:Value>
+            </jt:Input>
+            <jt:Input xsi:type="jt:ChoiceType" jt:label="Document Image Quality" jt:name="ImageMode">
+              <jt:Choice jt:label="Text" jt:defaultValue="true">Text</jt:Choice>
+              <jt:Choice jt:label="Photo">Halftone</jt:Choice>
+              <jt:Choice jt:label="Text + Photo">Mixed</jt:Choice>
+              <jt:Value>Text</jt:Value>
+            </jt:Input>
+          </jt:Group>
+          <jt:Group jt:label="Document parameter" jt:name="DocParam">
+            <jt:Input xsi:type="jt:StringType" jt:label="Folder name" jt:name="FolderName">
+              <jt:Value>DocumentFolder</jt:Value>
+            </jt:Input>
+            <jt:Input xsi:type="jt:StringType" jt:label="File name" jt:name="DocumentName">
+              <jt:Value>DocumentTitle</jt:Value>
+            </jt:Input>
+          </jt:Group>
+        </jt:OperatorInputs>
+        <jt:ExceptionHandler>
+          <jt:CatchAll jt:action="AbortProcess"/>
+        </jt:ExceptionHandler>
+      </jt:Setup>
+      <jt:DocumentProcess>
+        <jt:Assign xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ss="http://WebScanPrint/ExampleNamespace/StrageService">
+          <jt:Duplicate xsi:type="jt:Replace">
+            <jt:Source jt:xpath="//jt:Setup//jt:Group[1]/jt:Input[1]/jt:Value/node()"/>
+            <jt:Destination jt:xpath="//jt:DocumentProcess//jt:Scanner/jt:ColorMode/node()"/>
+          </jt:Duplicate>
+          <jt:Duplicate xsi:type="jt:Replace">
+            <jt:Source jt:xpath="//jt:Setup//jt:Group[1]/jt:Input[2]/jt:Value/node()"/>
+            <jt:Destination jt:xpath="//jt:DocumentProcess//jt:Scanner/jt:Duplex/node()"/>
+          </jt:Duplicate>
+          <jt:Duplicate xsi:type="jt:Replace">
+            <jt:Source jt:xpath="//jt:Setup//jt:Group[1]/jt:Input[3]/jt:Value/node()"/>
+            <jt:Destination jt:xpath="//jt:DocumentProcess//jt:Scanner/jt:ImageMode/node()"/>
+          </jt:Duplicate>
+          <jt:Duplicate xsi:type="jt:Replace">
+            <jt:Source jt:xpath="//jt:Setup//jt:Group[2]/jt:Input[1]/jt:Value/node()"/>
+            <jt:Destination jt:xpath="//jt:Invoke/jt:Request/jt:Prototype/jt:Message/soap:Envelope/soap:Body/ss:StoreDocument/ss:FolderName/node()"/>
+          </jt:Duplicate>
+          <jt:Duplicate xsi:type="jt:Replace">
+            <jt:Source jt:xpath="//jt:Setup//jt:Group[2]/jt:Input[2]/jt:Value/node()"/>
+            <jt:Destination jt:xpath="//jt:Invoke/jt:Request/jt:Prototype/jt:Message/soap:Envelope/soap:Body/ss:StoreDocument/ss:DocumentName/node()"/>
+          </jt:Duplicate>
+        </jt:Assign>
+        <jt:Acquire jt:name="scan" jt:container="container001">
+          <jt:Scanner>
+            <jt:InputMediumSize>
+              <jt:StandardMediumSize>Auto</jt:StandardMediumSize>
+            </jt:InputMediumSize>
+            <jt:HeadPosition>Left</jt:HeadPosition>
+            <jt:Duplex>Simplex</jt:Duplex>
+            <jt:ImageMode>Text</jt:ImageMode>
+            <jt:ColorMode>BlackAndWhite</jt:ColorMode>
+            <jt:Resolution>200x200/dpi</jt:Resolution>
+            <jt:OutputMediumSize>
+              <jt:StandardMediumSize>NotSpecified</jt:StandardMediumSize>
+            </jt:OutputMediumSize>
+            <jt:Magnification>
+              <jt:Isotropic>100</jt:Isotropic>
+            </jt:Magnification>
+          </jt:Scanner>
+        </jt:Acquire>
+        <jt:Invoke jt:name="storageService" jt:container="container001">
+          <jt:Profile>
+            <jt:Description jt:identifier="00000"></jt:Description>
+            <jt:Target>http://localhost/ScanUpload/ScanUploadService.asmx</jt:Target>
+            <jt:Type>SOAP/1.1</jt:Type>
+            <jt:Schema>
+              <jt:Namespace>http://WebScanPrint/ExampleNamespace/StrageService</jt:Namespace>
+              <jt:Location>http://localhost/ScanUpload/ScanUploadService.asmx?WSDL</jt:Location>
+            </jt:Schema>
+            <jt:MethodName>ScanUploadService</jt:MethodName>
+          </jt:Profile>
+          <jt:Request>
+            <jt:MessageType>RPC/Synchronous</jt:MessageType>
+            <jt:AuthInfo>
+              <jt:Method>Rfc2617</jt:Method>
+	      <jt:OperatorName></jt:OperatorName>
+	      <jt:Password></jt:Password>
+            </jt:AuthInfo>
+            <jt:SOAPAction>http://WebScanPrint/ExampleNamespace/StrageService#StoreDocument</jt:SOAPAction>
+            <jt:Prototype>
+              <jt:Message>
+                <soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+                  <soap:Body>
+                    <ss:StoreDocument xmlns:ss="http://WebScanPrint/ExampleNamespace/StrageService">
+                      <ss:FolderName>folderName</ss:FolderName>
+                      <ss:DocumentName>documentName</ss:DocumentName>
+                    </ss:StoreDocument>
+                  </soap:Body>
+                </soap:Envelope>
+              </jt:Message>
+              <jt:Attachment jt:transfer="true">
+                <jt:Regulation>SOAPMessagesWithAttachments</jt:Regulation>
+                <jt:Serialization>
+                  <jt:Compression>NotSpecified</jt:Compression>
+                  <jt:Format>PDF</jt:Format>
+                </jt:Serialization>
+                <jt:ContentTransferEncoding>base64</jt:ContentTransferEncoding>
+              </jt:Attachment>
+            </jt:Prototype>
+            <jt:TimeoutValue>60</jt:TimeoutValue>
+          </jt:Request>
+          <jt:Response>
+            <jt:Handling>None</jt:Handling>
+          </jt:Response>
+        </jt:Invoke>
+      </jt:DocumentProcess>
+    </jt:ProcessRequest>
+  </soapENV:Body>
+</soapENV:Envelope>

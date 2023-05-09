@@ -1,0 +1,979 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+AG_SCAN
+</name>
+</assembly>
+<members>
+<member name="T:AG_SCAN.My.MyWebExtension">
+ <summary>
+ Module used to define the properties that are available in the My Namespace for Web projects.
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:AG_SCAN.My.MyWebExtension.Computer">
+ <summary>
+ Returns information about the host computer.
+ </summary>
+</member>
+<member name="P:AG_SCAN.My.MyWebExtension.User">
+ <summary>
+ Returns information for the current Web user.
+ </summary>
+</member>
+<member name="P:AG_SCAN.My.MyWebExtension.Request">
+ <summary>
+ Returns Request object.
+ </summary>
+</member>
+<member name="P:AG_SCAN.My.MyWebExtension.Response">
+ <summary>
+ Returns Response object.
+ </summary>
+</member>
+<member name="P:AG_SCAN.My.MyWebExtension.Log">
+ <summary>
+ Returns the Asp log object.
+ </summary>
+</member>
+<member name="M:AG_SCAN.CheckCharCode.#ctor(System.String)">
+ <summary>
+ Constructor
+ </summary>
+ <param name="folderName"></param>
+</member>
+<member name="M:AG_SCAN.CheckCharCode.CheckCode">
+ <summary>
+ Check character codes that are not supported by Apeos JF SCLIPT
+ </summary>
+</member>
+<member name="F:AG_SCAN.Config.WebUiSampleNamespace">
+ <summary>
+ Name space for Web application
+ </summary>
+</member>
+<member name="F:AG_SCAN.Config.ConfigKey">
+ <summary>
+ Key (Session ID) for storing configuration
+ </summary>
+</member>
+<member name="F:AG_SCAN.Config.FolderKey">
+ <summary>
+ Key (Session ID) for storing folder path
+ </summary>
+</member>
+<member name="F:AG_SCAN.Config.CheckedKey">
+ <summary>
+ Key (Session ID) for storing check status
+ </summary>
+</member>
+<member name="F:AG_SCAN.Config.PrintTargetFilesKey">
+ <summary>
+ Key (Session ID) for storing the filename to be printed
+ </summary>
+</member>
+<member name="F:AG_SCAN.Config.ErrorMessageKey">
+ <summary>
+ Key (Session ID) for storing error message
+ </summary>
+</member>
+<member name="F:AG_SCAN.Config.ErrorTitleKey">
+ <summary>
+ Key (Session ID) for storing error title
+ </summary>
+</member>
+<member name="F:AG_SCAN.Config.PrintWaitTime">
+ <summary>
+ Waiting time after the print process starts
+ </summary>
+</member>
+<member name="F:AG_SCAN.Config.DeviceIPForDebug">
+ <summary>
+ Multifunction device's IP address to be used for printing while debugging
+ </summary>
+</member>
+<member name="F:AG_SCAN.Config.IndexDocServiceURL">
+ <summary>
+ Document Registration Web Service URL
+ </summary>
+</member>
+<member name="F:AG_SCAN.Config.JFTemplatePath">
+ <summary>
+ Folder for Apeos JF SCLIPT template
+ </summary>
+</member>
+<member name="F:AG_SCAN.Config.LogFolderForDebug">
+ <summary>
+ Folder used for storing error logs and Apeos JF SCLIPT
+ </summary>
+</member>
+<member name="F:AG_SCAN.Config.SaveJFScliptFile">
+ <summary>
+ Stored flag for Apeos JF SCLIPT
+ </summary>
+</member>
+<member name="F:AG_SCAN.Config.RootDirectoryPath">
+ <summary>
+ Root folder path for referring to the document
+ </summary>
+</member>
+<member name="F:AG_SCAN.Config.XdwSupport">
+ <summary>
+ Flag indicating whether DocuWorks document supports direct printing
+ </summary>
+</member>
+<member name="F:AG_SCAN.dppm._Head1">
+<summary>
+Head1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._form1">
+<summary>
+form1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._Image1">
+<summary>
+Image1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._Label5">
+<summary>
+Label5 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._ddlTahun">
+<summary>
+ddlTahun control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._lblerr1">
+<summary>
+lblerr1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._ddlBulan">
+<summary>
+ddlBulan control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._lblerr2">
+<summary>
+lblerr2 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._txtTgl">
+<summary>
+txtTgl control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._lblerr6">
+<summary>
+lblerr6 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._Label6">
+<summary>
+Label6 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._txtDPPM">
+<summary>
+txtDPPM control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._lblerr3">
+<summary>
+lblerr3 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._Label1">
+<summary>
+Label1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._txtPelanggan">
+<summary>
+txtPelanggan control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._lblerr4">
+<summary>
+lblerr4 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._Label2">
+<summary>
+Label2 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._txtEQ">
+<summary>
+txtEQ control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._lblerr5">
+<summary>
+lblerr5 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._btnBack">
+<summary>
+btnBack control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.dppm._ImageButton2">
+<summary>
+ImageButton2 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="M:AG_SCAN.dppm.SaveJFSclipt(System.String)">
+ <summary>
+ Save the created Apeos JF SCLIPT to local folder
+ </summary>
+</member>
+<member name="F:AG_SCAN.ErrorPage._Head1">
+<summary>
+Head1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.ErrorPage._form1">
+<summary>
+form1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.ErrorPage._ErrorTitleLabel">
+<summary>
+ErrorTitleLabel control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.ErrorPage._Image1">
+<summary>
+Image1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.ErrorPage._message">
+<summary>
+message control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.ErrorPage._btnOK">
+<summary>
+btnOK control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.index._Head1">
+<summary>
+Head1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.index._form1">
+<summary>
+form1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.index._btnKotrak">
+<summary>
+btnKotrak control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.index._btnDPPM">
+<summary>
+btnDPPM control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.index._btnSekre">
+<summary>
+btnSekre control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.index._lbltest">
+<summary>
+lbltest control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="M:AG_SCAN.JFSclipt.#ctor(System.String)">
+ <summary>
+ Constructor(public)
+ Initialize each parameter
+ </summary>
+ <param name="jobTemplatePath"></param>
+</member>
+<member name="M:AG_SCAN.JFSclipt.CreateJobTemplate">
+ <summary>
+ Create Apeos JF SCLIPT
+ </summary>
+ <returns></returns>
+</member>
+<member name="F:AG_SCAN.kontrak._Head1">
+<summary>
+Head1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.kontrak._form1">
+<summary>
+form1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.kontrak._Image1">
+<summary>
+Image1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.kontrak._Label5">
+<summary>
+Label5 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.kontrak._ddlTahun">
+<summary>
+ddlTahun control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.kontrak._lblerr1">
+<summary>
+lblerr1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.kontrak._ddlBulan">
+<summary>
+ddlBulan control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.kontrak._lblerr2">
+<summary>
+lblerr2 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.kontrak._Label1">
+<summary>
+Label1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.kontrak._txtPelanggan">
+<summary>
+txtPelanggan control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.kontrak._lblerr3">
+<summary>
+lblerr3 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.kontrak._Label2">
+<summary>
+Label2 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.kontrak._txtEQ">
+<summary>
+txtEQ control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.kontrak._lblerr4">
+<summary>
+lblerr4 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.kontrak._btnBack">
+<summary>
+btnBack control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.kontrak._ImageButton2">
+<summary>
+ImageButton2 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="M:AG_SCAN.kontrak.SaveJFSclipt(System.String)">
+ <summary>
+ Save the created Apeos JF SCLIPT to local folder
+ </summary>
+</member>
+<member name="F:AG_SCAN.Sekretaris._Head1">
+<summary>
+Head1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Sekretaris._form1">
+<summary>
+form1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Sekretaris._Label7">
+<summary>
+Label7 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Sekretaris._ddlJenis">
+<summary>
+ddlJenis control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Sekretaris._lblerr2">
+<summary>
+lblerr2 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Sekretaris._Label5">
+<summary>
+Label5 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Sekretaris._ddlTahun">
+<summary>
+ddlTahun control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Sekretaris._lblerr3">
+<summary>
+lblerr3 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Sekretaris._ddlBulan">
+<summary>
+ddlBulan control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Sekretaris._lblerr4">
+<summary>
+lblerr4 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Sekretaris._Label1">
+<summary>
+Label1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Sekretaris._txtTanggal">
+<summary>
+txtTanggal control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Sekretaris._lblerr5">
+<summary>
+lblerr5 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Sekretaris._Label2">
+<summary>
+Label2 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Sekretaris._txtNamaFile">
+<summary>
+txtNamaFile control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Sekretaris._lblerr6">
+<summary>
+lblerr6 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Sekretaris._btnBack">
+<summary>
+btnBack control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Sekretaris._ImageButton2">
+<summary>
+ImageButton2 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="M:AG_SCAN.Sekretaris.SaveJFSclipt(System.String)">
+ <summary>
+ Save the created Apeos JF SCLIPT to local folder
+ </summary>
+</member>
+<member name="T:AG_SCAN.SessionKeys">
+ <summary>
+ This class defines the keys (Session ID) used for storing value to session. 
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.PRINT_FILE">
+ <summary>
+ Key (SessionID) for storing the full path of the document to be printed
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.ERROR_MESSAGE">
+ <summary>
+ Key (Session ID) for storing error message
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.DEVICE_INFO">
+ <summary>
+ Key (SessionID) for storing the multifunction device information
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.BASIC_COMMANDLINE">
+ <summary>
+ Key (SessionID) for storing the Standard Print Settings command line 
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.OPTION_COMMANDLINE">
+ <summary>
+ Key (SessionID) for storing the advanced print settings command line
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.PAGE_SELECT">
+ <summary>
+ Key (SessionID) for storing the state of Page Specification
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.START_PAGE">
+ <summary>
+ Key (SessionID) for storing the Start Page Number of Page Specification
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.END_PAGE">
+ <summary>
+ Key (SessionID) for storing the End Page Number of Page Specification
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.COLOR_MODE">
+ <summary>
+ Key (Session ID) for storing Color Mode
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.DUPLEX_SELECT">
+ <summary>
+ Key (SessionID) for storing the 2-sided Specification
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.N_UP">
+ <summary>
+ Key (Session ID) for storing N-Up
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.OUTPUT_SIZE">
+ <summary>
+ Key (SessionID) for storing the Output Size
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.PRINT_COUNT">
+ <summary>
+ Key (SessionID) for storing the number of copies
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.SORT_ON">
+ <summary>
+ Key (Session ID) for storing Sort
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.PRINT_MODE">
+ <summary>
+ Key (SessionID) for storing Print Mode
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.ANNOTATION_SELECT">
+ <summary>
+ Key (Session ID) for storing Annotation
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.PAPER_BOX">
+ <summary>
+ Key (SessionID) for storing Paper Tray
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.PAPER_KIND">
+ <summary>
+ Key (SessionID) for storing Paper Type
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.OUTPUT_PLACE">
+ <summary>
+ Key (Session ID) for storing Output Method
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.STAPLER_ON">
+ <summary>
+ Key (Session ID) for storing Staple
+ </summary>
+</member>
+<member name="F:AG_SCAN.SessionKeys.PUNCH_ON">
+ <summary>
+ Key (SessionID) for storing Punch
+ </summary>
+</member>
+<member name="F:AG_SCAN.Trial._Head1">
+<summary>
+Head1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Trial._form1">
+<summary>
+form1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Trial._Label5">
+<summary>
+Label5 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Trial._ddlRange">
+<summary>
+ddlRange control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Trial._lblerr1">
+<summary>
+lblerr1 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Trial._txtLama">
+<summary>
+txtLama control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Trial._lblerr2">
+<summary>
+lblerr2 control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Trial._lblStatus">
+<summary>
+lblStatus control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="F:AG_SCAN.Trial._imgButtonSimpan">
+<summary>
+imgButtonSimpan control.
+</summary>
+<remarks>
+Auto-generated field.
+To modify move field declaration from designer file to code-behind file.
+</remarks>
+</member>
+<member name="T:AG_SCAN.ws_cs_license.ws_license_customscan">
+<remarks/>
+</member>
+<member name="M:AG_SCAN.ws_cs_license.ws_license_customscan.#ctor">
+<remarks/>
+</member>
+<member name="E:AG_SCAN.ws_cs_license.ws_license_customscan.CS_licensingCompleted">
+<remarks/>
+</member>
+<member name="M:AG_SCAN.ws_cs_license.ws_license_customscan.CS_licensing(System.String)">
+<remarks/>
+</member>
+<member name="M:AG_SCAN.ws_cs_license.ws_license_customscan.CS_licensingAsync(System.String)">
+<remarks/>
+</member>
+<member name="M:AG_SCAN.ws_cs_license.ws_license_customscan.CS_licensingAsync(System.String,System.Object)">
+<remarks/>
+</member>
+<member name="M:AG_SCAN.ws_cs_license.ws_license_customscan.CancelAsync(System.Object)">
+<remarks/>
+</member>
+<member name="T:AG_SCAN.ws_cs_license.CS_licensingCompletedEventHandler">
+<remarks/>
+</member>
+<member name="T:AG_SCAN.ws_cs_license.CS_licensingCompletedEventArgs">
+<remarks/>
+</member>
+<member name="P:AG_SCAN.ws_cs_license.CS_licensingCompletedEventArgs.Result">
+<remarks/>
+</member>
+</members>
+</doc>
