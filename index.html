@@ -1,151 +1,398 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Consent-Based Text Logger</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Browser Diagnostics — Memory / Cache / Network</title>
   <style>
-    body { font-family: system-ui, -apple-system, Roboto, Arial; max-width:900px; margin:2rem auto; padding:0 1rem; }
-    h1 { margin-bottom: .2rem; }
-    form { display:flex; gap:.5rem; margin-bottom:1rem; align-items:flex-start; }
-    input[type="text"], textarea { width:100%; padding:.5rem; border-radius:6px; border:1px solid #ccc; font-size:1rem; }
-    button { padding:.5rem .8rem; border-radius:6px; border:1px solid #888; background:#f3f3f3; cursor:pointer; }
-    .controls { display:flex; gap:.5rem; margin-bottom:1rem; }
-    .entry { padding:.5rem; border-bottom:1px solid #eee; }
-    .meta { color:#666; font-size:.85rem; margin-bottom:.25rem; }
-    .danger { color:#a00; }
+    body { font-family: system-ui, -apple-system, Roboto, Arial; max-width:1000px; margin:1.5rem auto; padding:0 1rem; color:#111; }
+    h1 { margin-bottom:.1rem; }
+    .grid { display:grid; grid-template-columns: 1fr 1fr; gap:1rem; }
+    .card { border:1px solid #e6e6e6; border-radius:8px; padding:1rem; background:#fff; box-shadow:0 1px 2px rgba(0,0,0,0.03); }
+    pre { white-space:pre-wrap; word-break:break-word; max-height:240px; overflow:auto; background:#f7f7f7; padding:.5rem; border-radius:6px; }
+    .muted { color:#666; font-size:.9rem; }
+    button { padding:.45rem .8rem; border-radius:6px; border:1px solid #bbb; background:#f4f4f4; cursor:pointer; }
+    .controls { display:flex; gap:.5rem; align-items:center; margin-bottom:.75rem; }
+    .full { grid-column: 1 / -1; }
+    table { width:100%; border-collapse:collapse; font-size:.95rem; }
+    th, td { text-align:left; padding:.35rem .5rem; border-bottom:1px solid #eee; }
+    small.note { display:block; margin-top:.5rem; color:#777; }
   </style>
 </head>
 <body>
-  <h1>Consent-Based Text Logger</h1>
-  <p>
-    This page only records text that the user explicitly <strong>submits</strong>.
-    It does <em>not</em> capture keystrokes or activity outside this page. Use only with clear consent.
-  </p>
-
-  <form id="inputForm">
-    <div style="flex:1">
-      <label for="name">Name (optional)</label><br />
-      <input id="name" name="name" type="text" placeholder="Your name" />
-      <label for="message" style="display:block; margin-top:.5rem">Message</label>
-      <textarea id="message" name="message" rows="4" placeholder="Type something and click Submit..." required></textarea>
-    </div>
-    <div style="width:140px; display:flex; flex-direction:column; gap:.5rem; margin-left:.5rem;">
-      <button type="submit">Submit</button>
-      <button id="clearForm" type="button">Clear fields</button>
-    </div>
-  </form>
+  <h1>Browser Diagnostics</h1>
+  <p class="muted">Live view of browser-exposed metrics for this page / origin. Data is local to your browser and origin only.</p>
 
   <div class="controls">
-    <button id="exportCsv" type="button">Export CSV</button>
-    <button id="clearStorage" type="button">Clear saved entries</button>
-    <div style="margin-left:auto; font-size:.9rem; color:#333;">
-      Entries stored: <span id="count">0</span>
+    <button id="refreshBtn">Refresh now</button>
+    <button id="exportBtn">Export JSON</button>
+    <label style="margin-left:auto;">
+      Auto-refresh
+      <input id="autoRefresh" type="checkbox" checked />
+    </label>
+    <small style="margin-left:.5rem" class="muted">interval: <input id="intervalMs" type="number" value="2000" style="width:80px" /> ms</small>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <h3>Memory (renderer) <small class="muted">performance.memory</small></h3>
+      <div id="memoryBlock">
+        <p class="muted">Checking availability…</p>
+      </div>
+      <small class="note">Note: non-standard, available mainly in some Chromium browsers.</small>
+    </div>
+
+    <div class="card">
+      <h3>Storage estimate</h3>
+      <div id="storageBlock">
+        <p class="muted">Checking availability…</p>
+      </div>
+      <small class="note">Shows approximate quota & usage (Storage API).</small>
+    </div>
+
+    <div class="card">
+      <h3>Network connection</h3>
+      <div id="netBlock">
+        <p class="muted">Checking availability…</p>
+      </div>
+      <small class="note">From Network Information API (may be coarse or unavailable).</small>
+    </div>
+
+    <div class="card">
+      <h3>Cache (Cache API)</h3>
+      <div id="cacheBlock"><p class="muted">Loading cache list…</p></div>
+      <small class="note">Only shows caches for this origin (site). If you use service workers, many assets may appear here.</small>
+    </div>
+
+    <div class="card full">
+      <h3>Resource / Network timing (last entries)</h3>
+      <div id="resourcesBlock"><p class="muted">Waiting for resources…</p></div>
+      <small class="note">Uses PerformanceResourceTiming & PerformanceObserver when available.</small>
+    </div>
+
+    <div class="card full">
+      <h3>Console & actions</h3>
+      <div>
+        <button id="clearCacheBtn">Delete all caches (origin)</button>
+        <button id="clearPerfBtn">Clear performance entries</button>
+        <button id="simulateFetchBtn">Fetch sample resource</button>
+        <div style="margin-top:.6rem">
+          <strong>Last exported JSON size:</strong> <span id="lastExportSize">—</span>
+        </div>
+      </div>
+      <pre id="log" aria-live="polite"></pre>
     </div>
   </div>
 
-  <div id="entries"></div>
-
   <script>
-    // Simple consent prompt before enabling save
-    const storageKey = 'consent_text_logger_entries_v1';
-    let entries = [];
+    // --- helpers ---
+    const logEl = document.getElementById('log');
+    function log(msg) {
+      const ts = new Date().toLocaleTimeString();
+      logEl.textContent = `[${ts}] ${msg}\\n` + logEl.textContent;
+    }
 
-    function load() {
-      try {
-        const raw = localStorage.getItem(storageKey);
-        entries = raw ? JSON.parse(raw) : [];
-      } catch(e) {
-        entries = [];
+    // --- memory ---
+    const memoryBlock = document.getElementById('memoryBlock');
+    function updateMemory() {
+      if (performance && performance.memory) {
+        const m = performance.memory;
+        const usedMB = (m.usedJSHeapSize / 1024 / 1024).toFixed(2);
+        const totalMB = (m.totalJSHeapSize / 1024 / 1024).toFixed(2);
+        const limitMB = (m.jsHeapSizeLimit / 1024 / 1024).toFixed(2);
+        memoryBlock.innerHTML = `
+          <table>
+            <tr><th>Used (MB)</th><td>${usedMB}</td></tr>
+            <tr><th>Total (MB)</th><td>${totalMB}</td></tr>
+            <tr><th>Limit (MB)</th><td>${limitMB}</td></tr>
+          </table>
+        `;
+      } else {
+        memoryBlock.innerHTML = '<p class="muted">performance.memory not available in this browser.</p>';
       }
-      renderEntries();
     }
 
-    function save() {
-      localStorage.setItem(storageKey, JSON.stringify(entries));
-      document.getElementById('count').textContent = entries.length;
+    // --- storage estimate ---
+    const storageBlock = document.getElementById('storageBlock');
+    async function updateStorage() {
+      if (navigator.storage && navigator.storage.estimate) {
+        try {
+          const est = await navigator.storage.estimate();
+          const usageMB = (est.usage ?? 0) / 1024 / 1024;
+          const quotaMB = (est.quota ?? 0) / 1024 / 1024;
+          const usagePct = est.quota ? ((est.usage / est.quota) * 100).toFixed(1) : '—';
+          storageBlock.innerHTML = `
+            <table>
+              <tr><th>Usage (MB)</th><td>${usageMB.toFixed(2)}</td></tr>
+              <tr><th>Quota (MB)</th><td>${quotaMB.toFixed(2)}</td></tr>
+              <tr><th>Used %</th><td>${usagePct}%</td></tr>
+            </table>
+          `;
+        } catch (e) {
+          storageBlock.innerHTML = '<p class="muted">Error reading storage estimate.</p>';
+          log('Storage estimate error: ' + e);
+        }
+      } else {
+        storageBlock.innerHTML = '<p class="muted">navigator.storage.estimate not supported.</p>';
+      }
     }
 
-    function renderEntries() {
-      const container = document.getElementById('entries');
-      container.innerHTML = '';
-      if (entries.length === 0) {
-        container.innerHTML = '<p><em>No entries yet.</em></p>';
-        document.getElementById('count').textContent = 0;
+    // --- network connection ---
+    const netBlock = document.getElementById('netBlock');
+    function updateNetworkInfo() {
+      const nc = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (!nc) {
+        netBlock.innerHTML = '<p class="muted">Network Information API not supported.</p>';
         return;
       }
-      entries.slice().reverse().forEach(e => {
-        const div = document.createElement('div');
-        div.className = 'entry';
-        const meta = document.createElement('div');
-        meta.className = 'meta';
-        meta.textContent = `${e.name ? e.name + ' — ' : ''}${new Date(e.time).toLocaleString()}`;
-        const msg = document.createElement('div');
-        msg.textContent = e.message;
-        div.appendChild(meta);
-        div.appendChild(msg);
-        container.appendChild(div);
-      });
-      document.getElementById('count').textContent = entries.length;
+      const fields = [
+        ['effectiveType', nc.effectiveType],
+        ['downlink (Mbps)', nc.downlink],
+        ['rtt (ms)', nc.rtt],
+        ['saveData', nc.saveData]
+      ];
+      netBlock.innerHTML = '<table>' + fields.map(f => `<tr><th>${f[0]}</th><td>${String(f[1])}</td></tr>`).join('') + '</table>';
     }
 
-    document.getElementById('inputForm').addEventListener('submit', (ev) => {
-      ev.preventDefault();
-      // simple consent check
-      if (!localStorage.getItem('consent_text_logger_allowed')) {
-        const allow = confirm('Do you consent to having the text you submit stored locally in this browser? (Only stored locally.)');
-        if (!allow) return;
-        localStorage.setItem('consent_text_logger_allowed', '1');
-      }
-
-      const name = document.getElementById('name').value.trim();
-      const message = document.getElementById('message').value.trim();
-      if (!message) return;
-
-      const entry = { name, message, time: new Date().toISOString() };
-      entries.push(entry);
-      save();
-      renderEntries();
-
-      // clear message field (keep name)
-      document.getElementById('message').value = '';
-    });
-
-    document.getElementById('clearForm').addEventListener('click', () => {
-      document.getElementById('name').value = '';
-      document.getElementById('message').value = '';
-    });
-
-    document.getElementById('clearStorage').addEventListener('click', () => {
-      if (!confirm('Clear all saved entries from this browser?')) return;
-      entries = [];
-      save();
-      renderEntries();
-    });
-
-    document.getElementById('exportCsv').addEventListener('click', () => {
-      if (entries.length === 0) { alert('No entries to export'); return; }
-      // build CSV
-      let csv = 'name,time,message\\n';
-      entries.forEach(e => {
-        // basic escaping
-        const esc = s => '"' + String(s).replace(/"/g, '""') + '"';
-        csv += [esc(e.name), esc(e.time), esc(e.message)].join(',') + '\\n';
+    // react to network changes
+    const nc = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (nc) {
+      nc.addEventListener('change', () => {
+        updateNetworkInfo();
+        log('navigator.connection changed');
       });
-      // download
-      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    }
+
+    // --- caches (Cache API) ---
+    const cacheBlock = document.getElementById('cacheBlock');
+    async function updateCaches() {
+      if (!('caches' in window)) {
+        cacheBlock.innerHTML = '<p class="muted">Cache API not supported.</p>';
+        return;
+      }
+      try {
+        const keys = await caches.keys();
+        if (keys.length === 0) {
+          cacheBlock.innerHTML = '<p class="muted">No caches found for this origin.</p>';
+          return;
+        }
+        let html = '<details open><summary>Cache names (' + keys.length + ')</summary>';
+        for (const name of keys) {
+          html += `<div style="margin:.5rem 0"><strong>${escapeHtml(name)}</strong>`;
+          try {
+            const cache = await caches.open(name);
+            const requests = await cache.keys();
+            html += `<div class="muted">Entries: ${requests.length}</div>`;
+            if (requests.length > 0) {
+              html += '<ul>';
+              for (const req of requests.slice(0, 50)) {
+                html += `<li><small>${escapeHtml(req.url.replace(location.origin, ''))}</small></li>`;
+              }
+              if (requests.length > 50) html += `<li><small>...and ${requests.length - 50} more</small></li>`;
+              html += '</ul>';
+            }
+          } catch (e) {
+            html += `<div class="muted">Error reading cache: ${e}</div>`;
+          }
+          html += '</div>';
+        }
+        html += '</details>';
+        cacheBlock.innerHTML = html;
+      } catch (e) {
+        cacheBlock.innerHTML = '<p class="muted">Error enumerating caches.</p>';
+        log('Caches error: ' + e);
+      }
+    }
+
+    // --- resource timing / PerformanceObserver ---
+    const resourcesBlock = document.getElementById('resourcesBlock');
+    let recentResources = [];
+    function formatResourceEntry(r) {
+      const name = r.name.replace(location.origin, '');
+      return {
+        name,
+        initiatorType: r.initiatorType,
+        duration: Math.round(r.duration),
+        transferSize: r.transferSize ?? 0,
+        encodedBodySize: r.encodedBodySize ?? 0,
+        decodedBodySize: r.decodedBodySize ?? 0,
+        startTime: Math.round(r.startTime)
+      };
+    }
+
+    function renderResources() {
+      if (!('performance' in window) || !performance.getEntriesByType) {
+        resourcesBlock.innerHTML = '<p class="muted">PerformanceResourceTiming not supported.</p>';
+        return;
+      }
+      const rows = recentResources.slice().reverse().slice(0, 50).map(r => {
+        return `<tr>
+          <td style="width:45%">${escapeHtml(r.name)}</td>
+          <td>${escapeHtml(r.initiatorType)}</td>
+          <td>${r.duration} ms</td>
+          <td>${r.transferSize}</td>
+        </tr>`;
+      }).join('');
+      resourcesBlock.innerHTML = `<table>
+        <thead><tr><th>Resource</th><th>Type</th><th>Duration</th><th>Bytes</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="4" class="muted">No resource entries yet.</td></tr>'}</tbody>
+      </table>`;
+    }
+
+    function setupPerfObserver() {
+      if ('PerformanceObserver' in window && PerformanceObserver.supportedEntryTypes && PerformanceObserver.supportedEntryTypes.includes('resource')) {
+        const obs = new PerformanceObserver(list => {
+          const entries = list.getEntries().map(formatResourceEntry);
+          recentResources = recentResources.concat(entries).slice(-500); // keep last 500
+          renderResources();
+        });
+        try {
+          obs.observe({ type: 'resource', buffered: true });
+          log('PerformanceObserver(resource) active');
+        } catch (e) {
+          log('PerformanceObserver observe failed: ' + e);
+        }
+      } else {
+        // fallback: seed from existing entries
+        try {
+          const existing = performance.getEntriesByType ? performance.getEntriesByType('resource').map(formatResourceEntry) : [];
+          recentResources = existing;
+          renderResources();
+        } catch (e) {
+          resourcesBlock.innerHTML = '<p class="muted">No performance entries available.</p>';
+        }
+      }
+    }
+
+    // --- utilities ---
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+    }
+
+    // --- actions ---
+    document.getElementById('refreshBtn').addEventListener('click', refreshAll);
+    document.getElementById('clearCacheBtn').addEventListener('click', async () => {
+      if (!confirm('Delete all caches for this origin? This cannot be undone.')) return;
+      try {
+        const keys = await caches.keys();
+        await Promise.all(keys.map(k => caches.delete(k)));
+        await updateCaches();
+        log('All caches deleted for this origin.');
+      } catch (e) {
+        log('Error deleting caches: ' + e);
+      }
+    });
+    document.getElementById('clearPerfBtn').addEventListener('click', () => {
+      if (performance && performance.clearResourceTimings) {
+        performance.clearResourceTimings();
+        recentResources = [];
+        renderResources();
+        log('Cleared performance resource timings.');
+      } else {
+        log('performance.clearResourceTimings not supported.');
+      }
+    });
+    document.getElementById('simulateFetchBtn').addEventListener('click', async () => {
+      try {
+        // fetch a small resource from same origin to create resource timing entry
+        const url = location.pathname.split('/').slice(0,-1).concat('favicon.ico').join('/') || '/';
+        await fetch(url, { cache: 'no-store' });
+        log('Fetched sample resource: ' + url);
+      } catch (e) {
+        log('Fetch error: ' + e);
+      }
+    });
+
+    // export
+    document.getElementById('exportBtn').addEventListener('click', async () => {
+      const snapshot = await gatherSnapshot();
+      const s = JSON.stringify(snapshot, null, 2);
+      const blob = new Blob([s], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'entries.csv';
+      a.download = `diagnostics-${new Date().toISOString().replace(/[:.]/g,'-')}.json`;
       document.body.appendChild(a);
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
+      document.getElementById('lastExportSize').textContent = `${(s.length/1024).toFixed(1)} KB`;
+      log('Exported diagnostics JSON (' + (s.length/1024).toFixed(1) + ' KB).');
     });
 
-    // initialize
-    load();
+    async function gatherSnapshot() {
+      const mem = performance && performance.memory ? {
+        usedJSHeapSize: performance.memory.usedJSHeapSize,
+        totalJSHeapSize: performance.memory.totalJSHeapSize,
+        jsHeapSizeLimit: performance.memory.jsHeapSizeLimit
+      } : null;
+
+      let cachesSnapshot = null;
+      if ('caches' in window) {
+        try {
+          const ks = await caches.keys();
+          cachesSnapshot = {};
+          for (const k of ks) {
+            const c = await caches.open(k);
+            const reqs = await c.keys();
+            cachesSnapshot[k] = reqs.map(r => ({ url: r.url }));
+          }
+        } catch (e) {
+          cachesSnapshot = { error: String(e) };
+        }
+      }
+
+      const storageEst = navigator.storage && navigator.storage.estimate ? await navigator.storage.estimate().catch(e => ({ error: String(e) })) : null;
+      const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection || null;
+      const perfEntries = (performance && performance.getEntriesByType) ? performance.getEntriesByType('resource').slice(-200).map(formatResourceEntry) : [];
+
+      return {
+        timestamp: new Date().toISOString(),
+        memory: mem,
+        storageEstimate: storageEst,
+        connection: conn ? {
+          effectiveType: conn.effectiveType,
+          downlink: conn.downlink,
+          rtt: conn.rtt,
+          saveData: conn.saveData
+        } : null,
+        caches: cachesSnapshot,
+        resources: perfEntries,
+        userAgent: navigator.userAgent,
+        origin: location.origin
+      };
+    }
+
+    // initial & auto-refresh
+    async function refreshAll() {
+      updateMemory();
+      await updateStorage();
+      updateNetworkInfo();
+      await updateCaches();
+      renderResources();
+      log('Refreshed diagnostics');
+    }
+
+    setupPerfObserver();
+    refreshAll();
+
+    // auto-refresh handling
+    let timer = null;
+    function setAutoRefresh() {
+      const cb = document.getElementById('autoRefresh').checked;
+      const ms = Math.max(200, Number(document.getElementById('intervalMs').value || 2000));
+      if (timer) clearInterval(timer);
+      if (cb) {
+        timer = setInterval(refreshAll, ms);
+      }
+    }
+    document.getElementById('autoRefresh').addEventListener('change', setAutoRefresh);
+    document.getElementById('intervalMs').addEventListener('change', setAutoRefresh);
+    setAutoRefresh();
+
+    // small accessibility: announce availability
+    log('Diagnostics page loaded. Note: limited by browser support & same-origin restrictions.');
+
   </script>
 </body>
 </html>
