@@ -1,0 +1,540 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Catch the Dot — Mini Game</title>
+<style>
+  :root{
+    --bg:#0f1724;
+    --card:#0b1220;
+    --accent:#00d4ff;
+    --accent-2:#7b61ff;
+    --muted:#9aa6b2;
+    --success:#2ee6a6;
+    --danger:#ff6b6b;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    background:linear-gradient(180deg,var(--bg) 0%, #08111a 100%);
+    color:#e6eef6;
+    font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+  }
+  .game-wrap{
+    width:100%;
+    max-width:900px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border:1px solid rgba(255,255,255,0.04);
+    border-radius:14px;
+    padding:18px;
+    box-shadow: 0 8px 30px rgba(2,6,23,0.6);
+    display:grid;
+    grid-template-columns: 280px 1fr;
+    gap:16px;
+    align-items:start;
+  }
+
+  /* left panel */
+  .panel{
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    border-radius:10px;
+    padding:14px;
+  }
+  .controls h1{
+    margin:0 0 8px 0;
+    font-size:20px;
+    letter-spacing:0.2px;
+  }
+  .score-row{
+    display:flex;
+    gap:8px;
+    margin:10px 0 12px 0;
+  }
+  .stat{
+    flex:1;
+    background:rgba(255,255,255,0.02);
+    padding:10px;
+    border-radius:8px;
+    text-align:center;
+  }
+  .stat .num{font-size:20px;font-weight:700}
+  .muted { color:var(--muted); font-size:13px; margin-top:6px; display:block }
+
+  .buttons{
+    display:flex;
+    gap:8px;
+    margin-top:14px;
+  }
+  button{
+    flex:1;
+    border:0;
+    padding:10px;
+    border-radius:8px;
+    background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    color:#041122;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 6px 18px rgba(123,97,255,0.14);
+  }
+  button.secondary{
+    background:transparent;
+    color:var(--muted);
+    border:1px solid rgba(255,255,255,0.04);
+    box-shadow:none;
+    font-weight:600;
+  }
+
+  .small{
+    font-size:13px;
+    color:var(--muted);
+    margin-top:12px;
+  }
+
+  /* play area */
+  .play-area{
+    position:relative;
+    height:432px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+    border-radius:10px;
+    overflow:hidden;
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .target{
+    --size:64px;
+    position:absolute;
+    width:var(--size);
+    height:var(--size);
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transform:translate(-50%,-50%) scale(1);
+    transition: transform 120ms ease-out;
+    cursor:pointer;
+    user-select:none;
+    touch-action: manipulation;
+  }
+  .target .inner{
+    width:70%;
+    height:70%;
+    border-radius:50%;
+    background:radial-gradient(circle at 30% 30%, rgba(255,255,255,0.6), rgba(255,255,255,0.1) 20%, transparent 50%),
+               linear-gradient(180deg, var(--accent), var(--accent-2));
+    box-shadow:0 8px 20px rgba(11,18,32,0.6), inset 0 -6px 20px rgba(0,0,0,0.25);
+  }
+
+  /* pulse / feedback */
+  .hit-effect{
+    position:absolute;
+    border-radius:50%;
+    pointer-events:none;
+    transform:translate(-50%,-50%) scale(0.2);
+    opacity:0.9;
+    animation:pop 500ms ease-out forwards;
+    mix-blend-mode:screen;
+  }
+  @keyframes pop{
+    to { transform:translate(-50%,-50%) scale(1.8); opacity:0; }
+  }
+
+  /* footer */
+  .footer{
+    margin-top:12px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:var(--muted);
+    font-size:13px;
+  }
+
+  @media (max-width:860px){
+    .game-wrap{ grid-template-columns: 1fr; }
+    .play-area{ height:360px; }
+  }
+</style>
+</head>
+<body>
+  <div class="game-wrap" role="application" aria-label="Catch the Dot game">
+    <div class="panel controls" aria-hidden="false">
+      <h1>🎯 Catch the Dot</h1>
+      <div class="small">Click or tap the dot to score. Avoid missing — difficulty increases over time.</div>
+
+      <div class="score-row" style="margin-top:12px">
+        <div class="stat" title="Current score">
+          <div class="num" id="score">0</div>
+          <span class="muted">Score</span>
+        </div>
+        <div class="stat" title="Time remaining">
+          <div class="num" id="time">30</div>
+          <span class="muted">Seconds</span>
+        </div>
+      </div>
+
+      <div class="stat" style="display:block; text-align:left; margin-top:6px;">
+        <div class="muted">Level</div>
+        <div class="num" id="level">1</div>
+      </div>
+
+      <div class="buttons">
+        <button id="startBtn" aria-pressed="false">Start Game</button>
+        <button id="resetBtn" class="secondary">Reset</button>
+      </div>
+
+      <div class="small">Controls: Tap/Click the dot. Press <kbd>Space</kbd> to Start / Pause.</div>
+
+      <div class="footer">
+        <div>Best: <strong id="best">0</strong></div>
+        <div class="muted">Made with ❤️ — responsive & touch-ready</div>
+      </div>
+    </div>
+
+    <div class="panel" style="padding:10px">
+      <div class="play-area" id="playArea" tabindex="0" aria-label="Play area">
+        <!-- target and effects inserted dynamically -->
+      </div>
+      <div style="margin-top:10px; color:var(--muted); font-size:13px">
+        Tip: as level increases, the dot appears for shorter time and can shrink — keep your eyes sharp!
+      </div>
+    </div>
+  </div>
+
+<script>
+/*
+  Catch the Dot
+  - Single-file mini-game
+  - Click/tap the target to score
+  - Timer-based rounds
+  - Difficulty & level progression
+  - Mobile and keyboard friendly
+*/
+
+(() => {
+  // DOM
+  const playArea = document.getElementById('playArea');
+  const scoreEl = document.getElementById('score');
+  const timeEl = document.getElementById('time');
+  const levelEl = document.getElementById('level');
+  const bestEl = document.getElementById('best');
+  const startBtn = document.getElementById('startBtn');
+  const resetBtn = document.getElementById('resetBtn');
+
+  // State
+  let score = 0;
+  let best = parseInt(localStorage.getItem('ctd_best') || '0', 10) || 0;
+  bestEl.textContent = best;
+  let timeLeft = 30;
+  let level = 1;
+  let running = false;
+  let tickInterval = null;
+  let targetTimeout = null;
+  let currentTarget = null;
+  let roundDuration = 30; // seconds
+  let spawnFrequency = 900; // ms initial
+  let targetVisibleTime = 900; // ms initial
+
+  // Config for difficulty progression
+  function setDifficultyForLevel(lvl) {
+    // Decrease times as level increases
+    spawnFrequency = Math.max(350, 900 - (lvl - 1) * 70);
+    targetVisibleTime = Math.max(280, 900 - (lvl - 1) * 120);
+  }
+
+  setDifficultyForLevel(level);
+
+  // Utility: random position within play area (keeping target onscreen)
+  function randomPosition(targetSize=64) {
+    const rect = playArea.getBoundingClientRect();
+    const padding = targetSize / 2 + 8;
+    const x = Math.floor(Math.random() * (rect.width - padding*2)) + padding;
+    const y = Math.floor(Math.random() * (rect.height - padding*2)) + padding;
+    return {x, y};
+  }
+
+  // Create target element
+  function spawnTarget() {
+    removeTarget(); // ensure single target
+    const target = document.createElement('div');
+    target.className = 'target';
+    target.setAttribute('role','button');
+    target.setAttribute('aria-label','Target - tap or click to score');
+    // Size variation by level
+    const baseSize = Math.max(36, 64 - (level - 1) * 4);
+    target.style.setProperty('--size', baseSize + 'px');
+
+    const pos = randomPosition(baseSize);
+    target.style.left = pos.x + 'px';
+    target.style.top = pos.y + 'px';
+
+    const inner = document.createElement('div');
+    inner.className = 'inner';
+    target.appendChild(inner);
+
+    // Handle click/tap
+    const onHit = (ev) => {
+      ev.stopPropagation();
+      // small scale animation
+      target.style.transform = 'translate(-50%,-50%) scale(0.88)';
+      setTimeout(()=> target.style.transform = 'translate(-50%,-50%) scale(1)', 120);
+      registerHit(pos.x, pos.y);
+    };
+
+    target.addEventListener('click', onHit);
+    target.addEventListener('touchstart', (e) => { e.preventDefault(); onHit(e); }, {passive:false});
+
+    playArea.appendChild(target);
+    currentTarget = target;
+
+    // schedule removal after visible time
+    targetTimeout = setTimeout(() => {
+      // miss -> penalty
+      removeTarget();
+      registerMiss();
+    }, targetVisibleTime);
+  }
+
+  function removeTarget() {
+    if (targetTimeout) { clearTimeout(targetTimeout); targetTimeout = null; }
+    if (currentTarget) {
+      currentTarget.remove();
+      currentTarget = null;
+    }
+  }
+
+  // Hit effect and scoring
+  function registerHit(x, y) {
+    // create pulse
+    const pulse = document.createElement('div');
+    pulse.className = 'hit-effect';
+    pulse.style.left = x + 'px';
+    pulse.style.top = y + 'px';
+    pulse.style.width = '120px';
+    pulse.style.height = '120px';
+    pulse.style.background = 'radial-gradient(circle at 40% 30%, rgba(255,255,255,0.20), rgba(123,97,255,0.08) 30%, transparent 60%)';
+    playArea.appendChild(pulse);
+    setTimeout(()=> pulse.remove(), 520);
+
+    // increment score
+    score += 1 + Math.floor(level/3);
+    scoreEl.textContent = score;
+
+    // small progress to level up every 10 points
+    const newLevel = 1 + Math.floor(score / 10);
+    if (newLevel !== level) {
+      level = newLevel;
+      levelEl.textContent = level;
+      setDifficultyForLevel(level);
+      // reward extra time on level up
+      timeLeft = Math.min(roundDuration, timeLeft + 3);
+      flashMessage('Level up!', 'success');
+    }
+
+    // remove target and schedule next spawn faster depending on level
+    removeTarget();
+    scheduleNextSpawn(Math.max(150, spawnFrequency - Math.random()*150));
+  }
+
+  function registerMiss() {
+    // penalty: lose 1-2 seconds
+    const penalty = 1 + Math.floor(level / 5);
+    timeLeft = Math.max(0, timeLeft - penalty);
+    flashMessage('-' + penalty + 's', 'danger');
+    // schedule next spawn
+    scheduleNextSpawn();
+  }
+
+  // spawn loop
+  function scheduleNextSpawn(after = spawnFrequency) {
+    if (!running) return;
+    if (targetTimeout) { clearTimeout(targetTimeout); targetTimeout = null; }
+    setTimeout(() => {
+      if (!running) return;
+      // sometimes skip spawn to keep tension
+      if (Math.random() < 0.08 + (level*0.01)) {
+        // spawn multiple quick ones
+      }
+      spawnTarget();
+    }, after);
+  }
+
+  // Timer tick
+  function startTimer() {
+    if (tickInterval) clearInterval(tickInterval);
+    tickInterval = setInterval(() => {
+      if (!running) return;
+      timeLeft -= 1;
+      timeEl.textContent = timeLeft;
+      if (timeLeft <= 0) {
+        endGame();
+      }
+    }, 1000);
+  }
+
+  // Start / Pause / Reset
+  function startGame() {
+    if (running) return;
+    running = true;
+    startBtn.textContent = 'Pause';
+    startBtn.setAttribute('aria-pressed','true');
+
+    // initialize on fresh start
+    if (score === 0 && timeLeft === roundDuration) {
+      // keep level 1
+    }
+
+    startTimer();
+    scheduleNextSpawn(600);
+    playArea.focus();
+  }
+
+  function pauseGame() {
+    running = false;
+    startBtn.textContent = 'Resume';
+    startBtn.setAttribute('aria-pressed','false');
+    if (tickInterval) { clearInterval(tickInterval); tickInterval = null; }
+    removeTarget();
+  }
+
+  function resetGame(full=true) {
+    pauseGame();
+    removeTarget();
+    score = 0;
+    level = 1;
+    timeLeft = roundDuration;
+    setDifficultyForLevel(level);
+    scoreEl.textContent = score;
+    levelEl.textContent = level;
+    timeEl.textContent = timeLeft;
+    startBtn.textContent = 'Start Game';
+    startBtn.setAttribute('aria-pressed','false');
+    if (full) flashMessage('Game reset', 'muted');
+  }
+
+  function endGame() {
+    running = false;
+    if (tickInterval) { clearInterval(tickInterval); tickInterval = null; }
+    removeTarget();
+    startBtn.textContent = 'Start Game';
+    startBtn.setAttribute('aria-pressed','false');
+
+    // store best
+    if (score > best) {
+      best = score;
+      bestEl.textContent = best;
+      localStorage.setItem('ctd_best', String(best));
+      flashMessage('New best: ' + best + ' ⭐', 'success');
+    } else {
+      flashMessage('Time up! Score: ' + score, 'muted');
+    }
+  }
+
+  // small floating message inside play area
+  function flashMessage(text, type='muted') {
+    const msg = document.createElement('div');
+    msg.textContent = text;
+    msg.style.position = 'absolute';
+    msg.style.left = '50%';
+    msg.style.top = '12%';
+    msg.style.transform = 'translateX(-50%)';
+    msg.style.padding = '8px 14px';
+    msg.style.borderRadius = '999px';
+    msg.style.fontWeight = '700';
+    msg.style.zIndex = 2000;
+    msg.style.fontSize = '14px';
+    msg.style.pointerEvents = 'none';
+    msg.style.opacity = '0';
+    msg.style.transition = 'opacity 160ms ease, transform 260ms ease';
+    if (type === 'success') {
+      msg.style.background = 'linear-gradient(90deg,#2ee6a6,#7bffcf)';
+      msg.style.color = '#012118';
+    } else if (type === 'danger') {
+      msg.style.background = 'linear-gradient(90deg,#ff6b6b,#ff9a9a)';
+      msg.style.color = '#2a0b0b';
+    } else {
+      msg.style.background = 'rgba(255,255,255,0.04)';
+      msg.style.color = '#eaf6ff';
+    }
+    playArea.appendChild(msg);
+
+    requestAnimationFrame(()=> {
+      msg.style.opacity = '1';
+      msg.style.transform = 'translateX(-50%) translateY(-6px)';
+    });
+    setTimeout(()=> {
+      msg.style.opacity = '0';
+      msg.style.transform = 'translateX(-50%) translateY(-20px)';
+      setTimeout(()=> msg.remove(), 400);
+    }, 900);
+  }
+
+  // Event bindings
+  startBtn.addEventListener('click', () => {
+    if (running) pauseGame();
+    else {
+      // if game ended (timeLeft=0) or fresh start, reset first
+      if (timeLeft <= 0) {
+        score = 0; level = 1; timeLeft = roundDuration;
+        scoreEl.textContent = score;
+        levelEl.textContent = level;
+        timeEl.textContent = timeLeft;
+      }
+      startGame();
+    }
+  });
+
+  resetBtn.addEventListener('click', () => resetGame(true));
+
+  // allow keyboard: space to toggle start/pause, Enter to start
+  window.addEventListener('keydown', (e) => {
+    if (e.code === 'Space') {
+      e.preventDefault();
+      if (running) pauseGame();
+      else startGame();
+    } else if (e.key === 'r' || e.key === 'R') {
+      resetGame(true);
+    }
+  });
+
+  // clicking empty play area counts as miss (for challenge)
+  playArea.addEventListener('click', (e) => {
+    // ignore clicks on target (target click handler handles it)
+    if (e.target === playArea) {
+      // small penalty
+      if (!running) return;
+      registerMiss();
+    }
+  });
+
+  // accessibility: allow Enter on focused playArea to start target spawn (handy for keyboard-only)
+  playArea.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (!running) startGame();
+    }
+  });
+
+  // keep UI updated each second (time)
+  setInterval(() => {
+    // make sure displayed time is synced
+    timeEl.textContent = timeLeft;
+    scoreEl.textContent = score;
+    levelEl.textContent = level;
+  }, 300);
+
+  // ensure game resets on resize (to avoid off-screen targets)
+  window.addEventListener('resize', () => {
+    removeTarget();
+  });
+
+  // initial reset
+  resetGame(true);
+
+})();
+</script>
+</body>
+</html>
